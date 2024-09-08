@@ -1,8 +1,11 @@
 config {
-    type: "view"
+    type: "view",
+    schema: "dataform",
+    name: "test_analytics_t",
+    description: "basic analytics extraction from GA4 Schema"
 }
 
 SELECT
-*
+  *
 FROM
-`valid-climber-191414.analytics_257585485.events_20240903`
+  `valid-climber-191414.analytics_257585485.events_20240903`
