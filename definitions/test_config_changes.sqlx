@@ -6,5 +6,11 @@ config {
 SELECT
   1 AS total
 UNION ALL
+
 SELECT
   13 AS total
+
+UNION ALL
+
+SELECT
+ 14 AS total
