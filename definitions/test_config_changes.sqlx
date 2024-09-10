@@ -1,6 +1,6 @@
 config {
-    type: 'view',
-    name: 'only_test_config'
+    type: 'table',
+    name: 'new_test_config'
 }
 
 SELECT
