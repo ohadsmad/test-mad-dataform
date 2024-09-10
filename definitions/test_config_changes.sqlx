@@ -1,0 +1,10 @@
+config {
+    type: 'view',
+    name: 'only_test_config'
+}
+
+SELECT
+  1 AS total
+UNION ALL
+SELECT
+  13 AS total
