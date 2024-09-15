@@ -1,0 +1,17 @@
+config {
+    type: "table"
+}
+
+SELECT
+  DISTINCT KEY,
+  CASE
+    WHEN value.string_value IS NOT NULL THEN "String"
+    WHEN value.int_value IS NOT NULL THEN "Int"
+    WHEN value.float_value IS NOT NULL THEN "Float"
+    WHEN value.double_value IS NOT NULL THEN "Double"
+    ELSE "Other"
+END
+  AS type
+FROM
+  ${ref("test-analytics-doona")},
+  UNNEST(event_params) AS params

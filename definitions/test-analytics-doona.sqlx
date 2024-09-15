@@ -1,8 +1,5 @@
 config {
-    type: "view",
-    schema: "dataform",
-    name: "test_analytics_t",
-    description: "basic analytics extraction from GA4 Schema"
+    type: "view"
 }
 
 SELECT

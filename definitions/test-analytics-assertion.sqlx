@@ -1,0 +1,11 @@
+config {
+    type: "assertion",
+    description: "analytics assertions"
+}
+
+SELECT
+  *
+FROM
+  `valid-climber-191414.analytics_257585485.events_20240903`
+WHERE
+  event_name ="page_view"

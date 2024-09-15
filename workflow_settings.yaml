@@ -1,5 +1,5 @@
 defaultProject: valid-climber-191414
 defaultLocation: US
-defaultDataset: dataform
+defaultDataset: dataform_assertions
 defaultAssertionDataset: dataform_assertions
 dataformCoreVersion: 3.0.0
