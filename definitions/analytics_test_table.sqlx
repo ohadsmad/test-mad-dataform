@@ -3,15 +3,15 @@ config {
 }
 
 SELECT
-  DISTINCT KEY,
-  CASE
-    WHEN value.string_value IS NOT NULL THEN "String"
-    WHEN value.int_value IS NOT NULL THEN "Int"
-    WHEN value.float_value IS NOT NULL THEN "Float"
-    WHEN value.double_value IS NOT NULL THEN "Double"
-    ELSE "Other"
-END
-  AS type
-FROM
-  ${ref("test-analytics-doona")},
-  UNNEST(event_params) AS params
+    event_name,
+    event_timestamp,
+    user_pseudo_id,
+    CONCAT(user_pseudo_id,(SELECT value.int_value FROM UNNEST(event_params) WHERE key='ga_session_id')) AS session_id,
+    param.key AS parameter_name,
+    param.value.string_value AS string_value,
+    param.value.int_value AS int_value,
+    param.value.float_value AS float_value,
+    param.value.double_value AS double_value
+  FROM
+  ${ref("test-analytics-doona")}, 
+    UNNEST(event_params) AS param
