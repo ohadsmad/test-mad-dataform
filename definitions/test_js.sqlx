@@ -1,0 +1,11 @@
+config {
+    type :'table',
+    schema : 'dataform_stagging'
+}
+
+const {extractEventParam} = require('./includes/event_config.js');
+SELECT
+  event_name,
+  ${extractEventParam('page_location')}
+FROM   ${ref("test-analytics-doona")}
+
