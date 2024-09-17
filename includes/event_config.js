@@ -1,6 +1,5 @@
-
- function extractEventParam(paramName) {
-  return `
+function extractEventParam(paramName) {
+    return `
     (SELECT value.string_value 
      FROM UNNEST(event_params) 
      WHERE key = '${paramName}' 
@@ -8,4 +7,5 @@
   `;
 }
 module.exports = {
-  extractEventParam}
+    extractEventParam
+};
