@@ -1,10 +1,24 @@
 config {
-    type :'table',
-    schema : 'dataform_stagging'
+    type :'incremental',
+    schema : 'dataform_stagging',
+    name : 'doona_analytics_unnested_incremental',
+    description : 'Incremental table for Doona GA4 data in unnested format',
+    uniqueKey:['user_psuedo_id','session_id','event_name','event_timestamp'],
+    bigquery:{
+      partitionBy : 'session_date'
+    }
 }
 
 
 SELECT
+  PARSE_DATE("%Y%m%d",MIN(event_date) OVER(PARTITION BY ${session_id.sessionId()})) session_date,
+  ${session_id.sessionId()} session_id,
   event_name,
-  ${event_config.extractEventParam('page_location')}
-FROM   ${ref("test-analytics-doona")}
+  ${event_config.extractEventParam('page_location')} page_location,
+  ${event_config.extractEventParam('page_title')} page_title,
+  ${event_config.extractEventParam('ga_session_number')} ga_session_number,
+  ${event_config.extractEventParam('engagement_time_msec')} engagement_time_msec,
+  ${event_config.extractEventParam('type')} type,
+  ${event_config.extractEventParam('traffic_type')} traffic_type,
+FROM   ${ref("events_*")}
+WHERE _TABLE_SUFFIX ="20240901"

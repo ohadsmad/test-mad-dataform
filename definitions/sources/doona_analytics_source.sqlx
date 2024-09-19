@@ -1,0 +1,6 @@
+config {
+    type: 'declaration',
+    database: 'valid-climber-191414',
+    schema: 'analytics_257585485',
+    name: 'events_*'
+}
