@@ -1,8 +1,10 @@
 config {
-    type: "view"
+    type: "table",
+    schema : 'dataform_stagging'
 }
 
 SELECT
   *
 FROM
-  `valid-climber-191414.analytics_257585485.events_20240903`
+  `valid-climber-191414.analytics_257585485.events_*`
+WHERE _TABLE_SUFFIX >"20240901"
