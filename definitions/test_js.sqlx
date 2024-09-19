@@ -1,18 +1,19 @@
 config {
-    type :'incremental',
-    schema : 'dataform_stagging',
-    name : 'doona_analytics_unnested_incremental',
-    description : 'Incremental table for Doona GA4 data in unnested format',
-    uniqueKey:['user_psuedo_id','session_id','event_name','event_timestamp'],
-    bigquery:{
-      partitionBy : 'session_date'
+    type: 'incremental',
+    schema: 'dataform_stagging',
+    name: 'doona_analytics_unnested_incremental',
+    description: 'Incremental table for Doona GA4 data in unnested format',
+    uniqueKey: ['user_pseudo_id', 'session_id', 'event_name', 'event_ts'],
+    bigquery: {
+        partitionBy: 'session_date'
     }
 }
 
-
 SELECT
   PARSE_DATE("%Y%m%d",MIN(event_date) OVER(PARTITION BY ${session_id.sessionId()})) session_date,
-  ${session_id.sessionId()} session_id,
+  IFNULL(${session_id.sessionId()},"NA") session_id,
+  IFNULL(user_pseudo_id,"NA") user_pseudo_id, 
+  TIMESTAMP_MICROS(event_timestamp) event_ts,
   event_name,
   ${event_config.extractEventParam('page_location')} page_location,
   ${event_config.extractEventParam('page_title')} page_title,
@@ -20,5 +21,8 @@ SELECT
   ${event_config.extractEventParam('engagement_time_msec')} engagement_time_msec,
   ${event_config.extractEventParam('type')} type,
   ${event_config.extractEventParam('traffic_type')} traffic_type,
-FROM   ${ref("events_*")}
-WHERE _TABLE_SUFFIX ="20240901"
+FROM
+  ${ref("events_*")}
+WHERE
+  _TABLE_SUFFIX BETWEEN "20240901" AND "20240903" 
+QUALIFY ROW_NUMBER() OVER(PARTITION BY ifnull(user_pseudo_id,"NA"), ifnull(session_id,"NA"), event_name ORDER BY event_ts ASC)=1
